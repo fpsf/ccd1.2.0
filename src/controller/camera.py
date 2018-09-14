@@ -279,6 +279,8 @@ class Camera(metaclass=Singleton):
 
     def stop_taking_photo(self):
         if getlinkstatus() is True:
+            if not self.continuousShooterThread.wait_temperature:
+                self.continuousShooterThread.stop_continuous_shooter()
             self.continuousShooterThread.stop_continuous_shooter()
             # self.standby_mode()
         else:

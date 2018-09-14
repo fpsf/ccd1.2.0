@@ -26,6 +26,9 @@ class SThread(QtCore.QThread):
         self.generic_count = 0
         self.final_image_name = None
 
+    @staticmethod
+    def check_connection():
+        return SbigDriver.getlinkstatus()
 
     def take_dark(self):
         '''

@@ -38,6 +38,9 @@ class ContinuousShooterThread(QtCore.QThread):
     def run(self):
         self.count = 1
         while self.continuous:
+            if not self.ss.check_connection():
+                self.stop_continuous_shooter()
+                continue
             try:
                 self.signal_temp.emit()
                 if self.wait_temperature:
@@ -58,16 +61,22 @@ class ContinuousShooterThread(QtCore.QThread):
         self.continuous = True
 
     def stop_continuous_shooter(self):
-        self.wait_temperature = False
-        self.continuous = False
-        self.not_two_dark = False
-        self.console.raise_text("Taking dark photo", 1)
-        """
-        self.shutter_control(False)
-        """
-        self.ss.take_dark()
-        time.sleep(1)
-        self.count = 1
+        if self.wait_temperature:
+            self.ds.continuous = False
+            self.wait_temperature = False
+            self.continuous = False
+            self.not_two_dark = False
+            self.console.raise_text("Taking dark photo", 1)
+            self.ss.take_dark()
+            time.sleep(1)
+            self.count = 1
+        else:
+            self.ds.continuous = False
+            self.wait_temperature = False
+            self.continuous = False
+            self.not_two_dark = False
+            time.sleep(1)
+            self.count = 1
 
     def stop_one_photo(self):
         self.one_photo = False
