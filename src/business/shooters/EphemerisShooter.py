@@ -268,9 +268,11 @@ class EphemerisShooter(QtCore.QThread):
     def stop_shooter(self):
         self.controller = False
         if self.continuousShooterThread.isRunning():
-            if not self.continuousShooterThread.wait_temperature:
-                self.continuousShooterThread.stop_continuous_shooter()
             self.continuousShooterThread.stop_continuous_shooter()
+        """
+        if not self.continuousShooterThread.wait_temperature:
+                self.continuousShooterThread.stop_continuous_shooter()
+        """
 
     def start_taking_photo(self):
         self.continuousShooterThread.set_sleep_time(self.s)

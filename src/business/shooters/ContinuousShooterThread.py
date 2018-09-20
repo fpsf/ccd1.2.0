@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import time
 
 from PyQt5 import QtCore
@@ -39,8 +40,21 @@ class ContinuousShooterThread(QtCore.QThread):
         self.count = 1
         while self.continuous:
             if not self.ss.check_connection():
-                self.stop_continuous_shooter()
-                continue
+                self.console.raise_text("Connection Lost!", 3)
+                time.sleep(1)
+                self.console.raise_text("Attempting Reconnection...", 2)
+                time.sleep(1)
+                status = self.ss.reconnect()
+                while (not status[0] and status[2]) and \
+                        (datetime.now() < datetime.now() + timedelta(seconds=self.s)):
+                    continue
+                if status[0] and status[2]:
+                    self.console.raise_text("Successfully Reconnected!", 1)
+                    time.sleep(1)
+                else:
+                    self.console.raise_text("Reconnection Failed. Aborting...", 3)
+                    time.sleep(1)
+                    self.stop_continuous_shooter()
             try:
                 self.signal_temp.emit()
                 if self.wait_temperature:
@@ -62,7 +76,7 @@ class ContinuousShooterThread(QtCore.QThread):
 
     def stop_continuous_shooter(self):
         if self.wait_temperature:
-            self.ds.continuous = False
+            # self.ds.continuous = False
             self.wait_temperature = False
             self.continuous = False
             self.not_two_dark = False
@@ -71,7 +85,7 @@ class ContinuousShooterThread(QtCore.QThread):
             time.sleep(1)
             self.count = 1
         else:
-            self.ds.continuous = False
+            # self.ds.continuous = False
             self.wait_temperature = False
             self.continuous = False
             self.not_two_dark = False
@@ -83,7 +97,6 @@ class ContinuousShooterThread(QtCore.QThread):
         self.wait_temperature = False
         self.continuous = False
         self.count = 1
-        self.exit()
 
     def thread_iniciada(self):
         if self.one_photo:

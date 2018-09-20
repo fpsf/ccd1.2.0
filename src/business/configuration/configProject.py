@@ -1,8 +1,6 @@
 from PyQt5 import QtCore
 
 from src.business.configuration.constants import project as p
-
-
 from src.ui.commons.verification import cb
 
 

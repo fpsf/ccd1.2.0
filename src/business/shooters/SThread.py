@@ -30,6 +30,10 @@ class SThread(QtCore.QThread):
     def check_connection():
         return SbigDriver.getlinkstatus()
 
+    @staticmethod
+    def reconnect():
+        return SbigDriver.open_driver(), SbigDriver.open_deviceusb(), SbigDriver.establishinglink()
+
     def take_dark(self):
         '''
         Manda instrução para o SbigDriver para tirar uma foto dark(shooter fechado)\
