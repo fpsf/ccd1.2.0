@@ -85,7 +85,7 @@ class Main(QtWidgets.QMainWindow):
         self.CCD_menu = CCD_menu(self)
         # self.cam.ephemerisShooterThread.continuousShooterThread.started.connect(self.ephem_button)
         self.cam.ephemerisShooterThread.signal_temp.connect(self.settings_false)
-        self.cam.ephemerisShooterThread.continuousShooterThread.finished.connect(self.stop_button)
+        # self.cam.ephemerisShooterThread.continuousShooterThread.finished.connect(self.stop_button)
         self.filters_menu = filters(self)
         self.all_settings = all_settings(self)
         # self.init_menu()
@@ -385,6 +385,7 @@ class Main(QtWidgets.QMainWindow):
         except Exception as e:
             print(e)
 
+    # 08:33:28
     def stop_button(self):
         try:
             if self.cam.continuousShooterThread.isRunning():

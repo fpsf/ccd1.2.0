@@ -37,7 +37,7 @@ class Camera(metaclass=Singleton):
         self.valor_pixels_y = None
 
         self.main = Status()
-        self.now_plus_10 = datetime.now()
+        self.now_plus = datetime.now()
         self.settedhour = datetime.now()
         """
         executa o modo manual continuousShooterThread
@@ -327,6 +327,7 @@ class Camera(metaclass=Singleton):
         self.console.raise_text('Shooter Finished\n', 2)
         time.sleep(1)
         self.log_ephem_infos()
+        self.standby_mode()
 
     def eshooter_observation_started(self):
         self.shooting = True
@@ -353,9 +354,9 @@ class Camera(metaclass=Singleton):
         try:
             now = datetime.now()
             if self.temp_contador_manual == 0:
-                self.now_plus_10 = datetime.now() + timedelta(minutes=10)
+                self.now_plus = now + timedelta(seconds=int(self.settings.get_camera_settings()[5]))
                 self.temp_contador_manual += 2
-            elif self.temp <= int(self.aux_temperature) or now >= self.now_plus_10:
+            elif self.temp <= int(self.aux_temperature) or now >= self.now_plus:
                 self.continuousShooterThread.wait_temperature = True
                 self.temp_contador_manual = 0
             else:
@@ -371,9 +372,9 @@ class Camera(metaclass=Singleton):
         try:
             now = datetime.now()
             if self.temp_contador == 0:
-                self.now_plus_10 = datetime.now() + timedelta(minutes=10)
+                self.now_plus = now + timedelta(seconds=int(self.settings.get_camera_settings()[5]))
                 self.temp_contador += 1
-            if self.temp <= int(self.aux_temperature) or now >= self.now_plus_10:
+            if self.temp <= int(self.aux_temperature) or now >= self.now_plus:
                 self.ephemerisShooterThread.wait_temperature = True
                 self.ephemerisShooterThread.continuousShooterThread.wait_temperature = True
 
