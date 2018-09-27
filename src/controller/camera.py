@@ -201,12 +201,12 @@ class Camera(metaclass=Singleton):
             self.console.raise_text("The camera is not connected!", 3)
 
     def get_temperature(self):
-        temp = "NAN",
+        temp = "NAN"
         try:
             if getlinkstatus() is True:
                 if not self.lock.is_locked():
                     self.lock.set_acquire()
-                    temp = tuple(get_temperature())[3]
+                    temp = get_temperature()[3]
                     self.temp = temp
                     self.lock.set_release()
             # else:

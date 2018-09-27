@@ -10,8 +10,8 @@ def cam_fixture():
 
 
 def test_temp_value(cam_fixture):
-    assert isinstance(Camera.get_temperature(cam_fixture)[0], str)
+    assert isinstance(Camera.get_temperature(cam_fixture), str)
 
 
-test_temp_value(cam_fixture)
+# test_temp_value(cam_fixture)
 # (1, 0.0, 15.45475770529314, -9.787817267811569)
