@@ -39,6 +39,9 @@ class ContinuousShooterThread(QtCore.QThread):
     def run(self):
         self.count = 1
         while self.continuous:
+
+            # *************************** Connection Check *****************************
+
             if not self.ss.check_connection():
                 self.console.raise_text("Connection Lost!", 3)
                 time.sleep(1)
@@ -55,8 +58,12 @@ class ContinuousShooterThread(QtCore.QThread):
                     self.console.raise_text("Reconnection Failed. Aborting...", 3)
                     time.sleep(1)
                     self.stop_continuous_shooter()
+
+            # *************************** Connection Check *****************************
+
             try:
-                self.signal_temp.emit()
+                if not self.wait_temperature:
+                    self.signal_temp.emit()
                 if self.wait_temperature:
                     self.ss.start()
                     while self.ss.isRunning():
