@@ -63,8 +63,8 @@ class Camera(metaclass=Singleton):
         self.aux_temperature = int(info_ini[0])
 
         self.temp = 0
-        self.temp_contador = 0
-        self.temp_contador_manual = 0
+        self.temp_contador = False
+        self.temp_contador_manual = False
         self.is_connected = False
 
     def init_slots(self):
@@ -218,6 +218,8 @@ class Camera(metaclass=Singleton):
                 # temp = "None",
         except Exception as e:
             self.console.raise_text("Unable to retrieve the temperature.\n{}".format(e), 3)
+            time.sleep(1)
+            temp = "NAN"
 
         return temp
 
@@ -351,14 +353,14 @@ class Camera(metaclass=Singleton):
         '''
         try:
             now = datetime.now()
-            if self.temp_contador_manual == 0:
+            if not self.temp_contador_manual:
                 self.now_plus = now + timedelta(seconds=int(self.settings.get_camera_settings()[5]))
-                self.temp_contador_manual += 2
+                self.temp_contador_manual = True
             elif self.temp <= int(self.aux_temperature) or now >= self.now_plus:
                 self.continuousShooterThread.wait_temperature = True
-                self.temp_contador_manual = 0
+                self.temp_contador_manual = False
             else:
-                self.temp_contador_manual += 2
+                self.temp_contador_manual = True
 
         except Exception as e:
             print(e)
@@ -369,14 +371,14 @@ class Camera(metaclass=Singleton):
         '''
         try:
             now = datetime.now()
-            if self.temp_contador == 0:
+            if not self.temp_contador:
                 self.now_plus = now + timedelta(seconds=int(self.settings.get_camera_settings()[5]))
-                self.temp_contador += 1
+                self.temp_contador = True
             if self.temp <= int(self.aux_temperature) or now >= self.now_plus:
                 self.ephemerisShooterThread.wait_temperature = True
                 self.ephemerisShooterThread.continuousShooterThread.wait_temperature = True
 
-                self.temp_contador = 0
+                self.temp_contador = False
         except Exception as e:
             print(e)
 

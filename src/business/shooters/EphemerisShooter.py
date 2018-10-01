@@ -158,6 +158,8 @@ class EphemerisShooter(QtCore.QThread):
                 # flag = 0
                 ephem_out = False
 
+                # **************************************** Ephem Loop ****************************************
+
                 if self.ignore_lunar_position:
                     if (float(math.degrees(a)) <= self.max_solar_elevation) and (flag == 0):
 
@@ -234,6 +236,8 @@ class EphemerisShooter(QtCore.QThread):
                                 flag = 0
                                 self.t = False
                                 self.shootOn = False
+
+                # **************************************** Ephem Loop ****************************************
 
                 '''
                 if float(math.degrees(a)) < self.max_solar_elevation or t == 1:

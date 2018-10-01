@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets
 
-from src.controller.Camera import Camera
+from src.controller.camera import Camera
 from src.controller.commons.Locker import Locker
 
 
