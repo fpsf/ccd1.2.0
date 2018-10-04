@@ -377,7 +377,6 @@ class Camera(metaclass=Singleton):
             if self.temp <= int(self.aux_temperature) or now >= self.now_plus:
                 self.ephemerisShooterThread.wait_temperature = True
                 self.ephemerisShooterThread.continuousShooterThread.wait_temperature = True
-
                 self.temp_contador = False
         except Exception as e:
             print(e)
