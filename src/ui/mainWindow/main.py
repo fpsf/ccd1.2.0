@@ -85,7 +85,7 @@ class Main(QtWidgets.QMainWindow):
         self.CCD_menu = CCD_menu(self)
         # self.cam.ephemerisShooterThread.continuousShooterThread.started.connect(self.ephem_button)
         self.cam.ephemerisShooterThread.signal_temp.connect(self.settings_false)
-        # self.cam.ephemerisShooterThread.continuousShooterThread.finished.connect(self.stop_button)
+        self.cam.ephemerisShooterThread.continuousShooterThread.finished.connect(self.settings_true)
         self.filters_menu = filters(self)
         self.all_settings = all_settings(self)
         # self.init_menu()
@@ -104,6 +104,9 @@ class Main(QtWidgets.QMainWindow):
 
     def settings_false(self):
         self.allSettingsAction.setEnabled(False)
+
+    def settings_true(self):
+        self.allSettingsAction.setEnabled(True)
 
     def init_widgets(self):
         a = MainWindow(self)
