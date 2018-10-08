@@ -220,6 +220,7 @@ class Camera(metaclass=Singleton):
             self.console.raise_text("Unable to retrieve the temperature.\n{}".format(e), 3)
             time.sleep(1)
             temp = "NAN"
+            self.lock.set_release()
 
         return temp
 
